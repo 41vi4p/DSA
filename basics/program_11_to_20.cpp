@@ -79,85 +79,202 @@ void p14()
 }
 
 void p15(){
-// 1 2 3 
-// 1 2 3 
-// 1 2 3 
-    int n=3;
+// *****
+//  ****
+//   ***
+//    **
+//     * 
+    int n=5;
+    int l=1,c=5;
     for(int i=1;i<=n;i++){
-        for(int j=1; j<=3;j++)
-            cout<<j<<" ";
+        for(int k=c; k>=1;k--)
+                cout<<"*";
         cout<<endl;
-    }
-}
-
-void p6(int n){
-// 3 3 3 
-// 2 2 2 
-// 1 1 1  
-    for(int i=3;i>=1;i--){
-        for(int j=1; j<=3;j++)
-            cout<<i<<" ";
-        cout<<endl;
-    }
-}
-
-void p7(int n){
-// A A A 
-// B B B 
-// C C C 
-    char A='A';
-    for(int i=1;i<=3;i++){
-        for(int j=1; j<=3;j++)
-            cout<<A<<" ";
-        A=A+1;
-        cout<<endl;
-    }
-}
-
-void p8(){
-// A B C 
-// A B C 
-// A B C 
-    char A='A';
-    for(int i=1;i<=3;i++){
-        for(int j=1; j<=3;j++)
+        for(int j=l; j>=1;j--)
         {
-            cout<<A<<" ";
-            A=A+1;
+            
+            cout<<" ";
         }
-        A='A';
-        
-        cout<<endl;
+        c--;
+        l++;
+        // cout<<endl;
     }
 }
 
-void p9(){
-// A B C 
-// D E F 
-// G H I
-    char A='A';
-    for(int i=1;i<=3;i++){
-        for(int j=1; j<=3;j++)
+void p16(){
+//      *
+//     ***
+//    *****
+//   *******
+//  *********  
+    int n=5;
+    int l=n-1;
+    for(int i=1;i<=n;i++){
+        for(int k=l;k>=i-1;k--)
         {
-            cout<<A<<" ";
-            A=A+1;
+            cout<<" ";
+        }
+        for(int j=1; j<=2*i-1;j++)
+        { 
+            cout<<"*";
         }
         
         cout<<endl;
     }
 }
 
-void p10(){
-// C C C 
-// B B B 
-// A A A
-    char A='C';
-    for(int i=3;i>=1;i--){
-        for(int j=1; j<=3;j++)
+void p17(){
+// *****
+//  ***
+//   * 
+    int n=4;
+    int l=1;
+    for(int i=1;i<=n;i++){
+        for(int k=1;k<=i-1;k++)
         {
-            cout<<A<<" ";
+            cout<<" ";
         }
-        A=A-1;
+        for(int j=1; j<=2*(n-i)+1;j++)
+        { 
+            cout<<"*";
+        }
+        
+        cout<<endl;
+        
+    }
+}
+
+void p18(){
+//     *
+//    ***
+//   *****
+//  *******
+// *********
+//  *******
+//   *****
+//    ***
+//     *
+    int n=4;
+    int l=n-1;
+    for(int i=1;i<=n;i++){
+        for(int k=l;k>=i-1;k--)
+        {
+            cout<<" ";
+        }
+        for(int j=1; j<=2*i-1;j++)
+        { 
+            cout<<"*";
+        }
+        
+        cout<<endl;
+    }
+    n=5;
+    l=1;
+    for(int i=1;i<=n;i++){
+        for(int k=1;k<=i-1;k++)
+        {
+            cout<<" ";
+        }
+        for(int j=1; j<=2*(n-i)+1;j++)
+        { 
+            cout<<"*";
+        }
+        
+        cout<<endl;
+        
+    }
+}
+
+void p19(){
+// * * * * * 
+// *       * 
+// *       * 
+// *       * 
+// * * * * * 
+    int n=5;
+    for(int i=1; i<=n;i++)
+    {
+        if(i==1 || i==5){
+            for(int j=1;j<=n;j++){
+                cout<<"* ";
+            }
+        }
+        else {
+                cout<<"* ";
+                for(int j=1;j<=n-2;j++){
+                    cout<<"  ";
+                }
+                cout<<"* ";
+            }
+        
+        cout<<endl;
+    }    
+}
+
+void p20(){
+//     *
+//     *
+// * * * * * 
+//     *
+//     *
+    int n=5;
+    int f=(n+1)/2;
+    int k;
+    for(int i=1;i<=n;i++)
+    {
+        if(i==f){
+            for(int j=1;j<=n;j++){
+                cout<<"* ";
+            }
+        }
+        else
+        {
+            k=f;
+            for(int j=1;j<=k;j++){
+                cout<<" ";
+            }
+            cout<<" *";
+        }
+        cout<<endl;
+    }
+}
+
+void p21(){
+//  *     *
+//   *   *
+//     *
+//   *   *
+//  *     *
+    int n=5;
+    for(int i=1;i<=n;i++){
+        if(i==5 || i==1){
+            cout<<" *";
+            for(int j=1;j<=n-1;j++){
+                cout<<" ";
+            }
+            cout<<" *";
+
+        }
+        else if(i==2||i==4){
+            for(int j=1;j<=n-4;j++){
+                cout<<" ";
+            }
+            cout<<" *";
+            for(int j=1;j<=n-3;j++){
+                cout<<" ";
+            }
+            cout<<" *";
+        }
+        else if(i==3){
+            for(int j=1;j<=n-4;j++){
+                cout<<" ";
+            }
+            
+            for(int j=1;j<=n-3;j++){
+                cout<<" ";
+            }
+            cout<<" *";
+        }
         cout<<endl;
     }
 }
@@ -165,6 +282,6 @@ void p10(){
 int main(){
     int i,n=3;
     cout<<endl;
-    p15();
+    p20();
     return 0;
 }

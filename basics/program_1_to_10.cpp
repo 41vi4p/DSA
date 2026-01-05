@@ -140,9 +140,3 @@ void p10(){
     }
 }
 
-int main(){
-    int i,n=3;
-    cout<<endl;
-    p10();
-    return 0;
-}
