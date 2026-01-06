@@ -279,9 +279,9 @@ void p21(){
     }
 }
 
-int main(){
-    int i,n=3;
-    cout<<endl;
-    p20();
-    return 0;
-}
+// int main(){
+//     int i,n=3;
+//     cout<<endl;
+//     p20();
+//     return 0;
+// }
