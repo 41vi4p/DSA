@@ -1,6 +1,6 @@
+package array;
 
 import java.util.Scanner;
-
 public class move_zero_end {
    public move_zero_end() {
    }
