@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Cheatsheet — C++</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;700&display=swap');
+  :root {
+    --bg: #0b0d12; --s: #12151e; --s2: #1a1e2e;
+    --b: #252a3d; --ac: #7c6af7; --g: #36d7b7;
+    --o: #f7a04a; --r: #f76a6a; --t: #e4e8f5; --m: #7a82a6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--t); font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5; padding: 24px; }
+  h1 { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--ac); margin-bottom: 4px; }
+  .sub { color: var(--m); font-size: 11px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+  .card {
+    background: var(--s);
+    border: 1px solid var(--b);
+    border-radius: 8px;
+    padding: 12px 14px;
+    break-inside: avoid;
+  }
+  .card-title {
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 700; font-size: 12px; margin-bottom: 8px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--b);
+  }
+  .card-title .icon { font-size: 14px; }
+  .card-title .name { color: var(--t); }
+  .card-title .tag {
+    margin-left: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  }
+  .tag-g { background: rgba(54,215,183,0.1); color: var(--g); }
+  .tag-p { background: rgba(124,106,247,0.1); color: var(--ac); }
+  .tag-o { background: rgba(247,160,74,0.1); color: var(--o); }
+  .tag-r { background: rgba(247,106,106,0.1); color: var(--r); }
+
+  table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; margin-bottom: 8px; }
+  th { text-align: left; color: var(--m); font-size: 9px; letter-spacing: .8px; text-transform: uppercase; padding: 3px 4px; border-bottom: 1px solid var(--b); }
+  td { padding: 3px 4px; border-bottom: 1px solid rgba(37,42,61,0.5); }
+  tr:last-child td { border: none; }
+  .g { color: var(--g); } .p { color: var(--ac); } .o { color: var(--o); } .r { color: var(--r); }
+
+  .snippet { background: #0e1117; border-radius: 5px; padding: 8px 10px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #c8d3f5; line-height: 1.6; margin-top: 8px; overflow-x: auto; }
+  .kw { color: #c792ea; } .ty { color: #82aaff; } .cm { color: #4d5977; font-style: italic; } .st { color: #c3e88d; }
+
+  .use { font-size: 11px; color: var(--m); margin-bottom: 6px; }
+  .use span { color: var(--t); }
+
+  .tip { background: rgba(124,106,247,0.06); border-left: 2px solid var(--ac); padding: 6px 8px; border-radius: 0 5px 5px 0; font-size: 11px; color: #bcc5e8; margin-top: 8px; }
+  .tip strong { color: var(--ac); }
+
+  .wide { grid-column: span 2; }
+  .section-label { grid-column: 1 / -1; font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--m); margin-top: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--b); }
+
+  @media print {
+    body { background: white; color: black; }
+    .card { border: 1px solid #ccc; }
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } .wide { grid-column: span 2; } }
+  @media (max-width: 500px) { .grid { grid-template-columns: 1fr; } .wide { grid-column: span 1; } }
+</style>
+</head>
+<body>
+<h1>// DSA Quick Cheatsheet · C++</h1>
+<div class="sub">All structures · Time complexities · Declare syntax · Key patterns · Interview gotchas</div>
+
+<div class="grid">
+
+  <!-- ===== LINEAR ===== -->
+  <div class="section-label">Linear Structures</div>
+
+  <!-- ARRAY -->
+  <div class="card">
+    <div class="card-title"><span class="icon">📦</span><span class="name">Array / Vector</span><span class="tag tag-g">O(1) access</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>Access [i]</td><td class="g">O(1)</td></tr>
+      <tr><td>push_back</td><td class="g">O(1) amort</td></tr>
+      <tr><td>Insert mid</td><td class="r">O(n)</td></tr>
+      <tr><td>Binary search</td><td class="p">O(log n)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; v;
+v.<span class="kw">push_back</span>(x);
+<span class="kw">sort</span>(v.<span class="kw">begin</span>(),v.<span class="kw">end</span>());
+<span class="cm">// two-pointer, sliding window</span></div>
+    <div class="tip"><strong>⚡</strong> Prefix sums for range queries in O(1)</div>
+  </div>
+
+  <!-- LINKED LIST -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔗</span><span class="name">Linked List</span><span class="tag tag-g">O(1) insert known</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>Access</td><td class="r">O(n)</td></tr>
+      <tr><td>Insert head</td><td class="g">O(1)</td></tr>
+      <tr><td>Delete (doubly)</td><td class="g">O(1)</td></tr>
+      <tr><td>Search</td><td class="r">O(n)</td></tr>
+    </table>
+    <div class="snippet"><span class="kw">struct</span> <span class="ty">Node</span> { <span class="kw">int</span> val; <span class="ty">Node</span>* next; };
+<span class="cm">// Reverse: prev, curr, nxt loop</span>
+<span class="cm">// Cycle: fast/slow pointer</span>
+<span class="cm">// Mid: fast 2x, slow 1x</span></div>
+    <div class="tip"><strong>⚡</strong> Dummy head eliminates edge cases</div>
+  </div>
+
+  <!-- STACK -->
+  <div class="card">
+    <div class="card-title"><span class="icon">📚</span><span class="name">Stack</span><span class="tag tag-o">LIFO</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>push / pop / top</td><td class="g">O(1)</td></tr>
+      <tr><td>Search</td><td class="r">O(n)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">stack</span>&lt;<span class="kw">int</span>&gt; st;
+st.<span class="kw">push</span>(x); st.<span class="kw">top</span>(); st.<span class="kw">pop</span>();
+<span class="cm">// pop() returns VOID — save top first!</span>
+<span class="cm">// Monotonic: NGE, histograms</span>
+<span class="cm">// Valid parens, DFS iterative</span></div>
+    <div class="tip"><strong>⚡</strong> Monotonic stack → O(n) "next greater"</div>
+  </div>
+
+  <!-- QUEUE -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🚦</span><span class="name">Queue</span><span class="tag tag-o">FIFO</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>push / pop / front</td><td class="g">O(1)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">queue</span>&lt;<span class="kw">int</span>&gt; q;
+q.<span class="kw">push</span>(x); q.<span class="kw">front</span>(); q.<span class="kw">pop</span>();
+<span class="cm">// BFS template: visited[], queue</span>
+
+<span class="cm">// Priority queue (max-heap default)</span>
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>&gt; pq;
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>,<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;,<span class="ty">greater</span>&lt;<span class="kw">int</span>&gt;&gt; minPQ;</div>
+    <div class="tip"><strong>⚡</strong> BFS = Queue · Top-K = min-heap size K</div>
+  </div>
+
+  <!-- DEQUE -->
+  <div class="card">
+    <div class="card-title"><span class="icon">↔️</span><span class="name">Deque</span><span class="tag tag-g">O(1) both ends</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>push/pop front+back</td><td class="g">O(1)</td></tr>
+      <tr><td>Random access</td><td class="g">O(1)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">deque</span>&lt;<span class="kw">int</span>&gt; dq;
+dq.<span class="kw">push_front</span>(x); dq.<span class="kw">push_back</span>(x);
+dq.<span class="kw">pop_front</span>();    dq.<span class="kw">pop_back</span>();
+<span class="cm">// Sliding window max: monotonic deque</span>
+<span class="cm">// 0-1 BFS, palindrome check</span></div>
+    <div class="tip"><strong>⚡</strong> Sliding window max/min in O(n)</div>
+  </div>
+
+  <!-- ===== HASHING ===== -->
+  <div class="section-label">Hashing</div>
+
+  <!-- HASHMAP -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🗺️</span><span class="name">Hash Map</span><span class="tag tag-g">O(1) avg</span></div>
+    <table>
+      <tr><th>Structure</th><th>Op time</th><th>Ordered?</th></tr>
+      <tr><td>unordered_map</td><td class="g">O(1) avg</td><td class="r">No</td></tr>
+      <tr><td>map</td><td class="p">O(log n)</td><td class="g">Yes</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">unordered_map</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt; mp;
+mp[key]++;          <span class="cm">// creates if missing!</span>
+mp.<span class="kw">count</span>(key);    <span class="cm">// safe check</span>
+mp.<span class="kw">find</span>(key);     <span class="cm">// iterator or end()</span>
+<span class="cm">// Two Sum: seen[complement] lookup</span>
+<span class="cm">// Freq count: mp[x]++</span></div>
+    <div class="tip"><strong>⚡</strong> <code>[]</code> inserts 0 — use <code>count()</code> to check</div>
+  </div>
+
+  <!-- HASHSET -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔵</span><span class="name">Hash Set</span><span class="tag tag-p">No duplicates</span></div>
+    <table>
+      <tr><th>Op</th><th>unordered_set</th><th>set</th></tr>
+      <tr><td>Insert/Find/Erase</td><td class="g">O(1)</td><td class="p">O(log n)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">unordered_set</span>&lt;<span class="kw">int</span>&gt; s;
+s.<span class="kw">insert</span>(x);
+s.<span class="kw">count</span>(x);  <span class="cm">// 0 or 1</span>
+s.<span class="kw">erase</span>(x);
+<span class="cm">// Consecutive sequence start: !s.count(n-1)</span>
+<span class="cm">// Deduplication, visited tracking</span></div>
+    <div class="tip"><strong>⚡</strong> Use <code>set</code> when sorted order needed</div>
+  </div>
+
+  <!-- ===== TREES ===== -->
+  <div class="section-label">Trees</div>
+
+  <!-- TREE -->
+  <div class="card wide">
+    <div class="card-title"><span class="icon">🌳</span><span class="name">Binary Tree — Traversals</span><span class="tag tag-p">O(n) all traversals</span></div>
+    <table>
+      <tr><th>Traversal</th><th>Order</th><th>Use for</th></tr>
+      <tr><td>Inorder</td><td>L → Root → R</td><td class="g">Sorted BST, kth smallest</td></tr>
+      <tr><td>Preorder</td><td>Root → L → R</td><td class="p">Copy tree, serialize</td></tr>
+      <tr><td>Postorder</td><td>L → R → Root</td><td class="o">Height, delete tree</td></tr>
+      <tr><td>Level-order</td><td>BFS by level</td><td class="g">Shortest path, zigzag</td></tr>
+    </table>
+    <div class="snippet"><span class="kw">struct</span> <span class="ty">TreeNode</span> { <span class="kw">int</span> val; <span class="ty">TreeNode</span> *left, *right; };
+<span class="cm">// Max depth</span>
+<span class="kw">int</span> depth(<span class="ty">TreeNode</span>* r) { <span class="kw">return</span> !r ? 0 : 1+<span class="kw">max</span>(depth(r->left),depth(r->right)); }
+<span class="cm">// Diameter: track max(L+R) during DFS height computation</span>
+<span class="cm">// Inorder iterative: stack, go left, pop, go right</span></div>
+    <div class="tip"><strong>⚡</strong> 90% of tree problems = DFS recursion. Trust the call stack.</div>
+  </div>
+
+  <!-- BST -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔍</span><span class="name">BST</span><span class="tag tag-p">O(log n) balanced</span></div>
+    <table>
+      <tr><th>Op</th><th>Balanced</th><th>Skewed</th></tr>
+      <tr><td>Search/Insert</td><td class="p">O(log n)</td><td class="r">O(n)</td></tr>
+    </table>
+    <div class="snippet"><span class="cm">// Validate BST: pass min/max range</span>
+<span class="kw">bool</span> ok(<span class="ty">TreeNode</span>* n, <span class="kw">long</span> lo, <span class="kw">long</span> hi) {
+  <span class="kw">if</span>(!n) <span class="kw">return true</span>;
+  <span class="kw">if</span>(n->val<=lo||n->val>=hi) <span class="kw">return false</span>;
+  <span class="kw">return</span> ok(n->left,lo,n->val)&&ok(n->right,n->val,hi);
+}
+<span class="cm">// LCA BST: if both < root → go left, both > → right, else root</span></div>
+    <div class="tip"><strong>⚡</strong> Inorder of BST = sorted array</div>
+  </div>
+
+  <!-- HEAP -->
+  <div class="card">
+    <div class="card-title"><span class="icon">⛰️</span><span class="name">Heap / PQ</span><span class="tag tag-g">O(1) peek</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>peek top</td><td class="g">O(1)</td></tr>
+      <tr><td>push / pop</td><td class="p">O(log n)</td></tr>
+      <tr><td>build from n</td><td class="g">O(n)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">priority_queue</span>&lt;<span class="kw">int</span>&gt; maxPQ;  <span class="cm">// max heap</span>
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>,<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;,<span class="ty">greater</span>&lt;<span class="kw">int</span>&gt;&gt; minPQ;
+<span class="cm">// Kth largest: min-heap size K</span>
+<span class="cm">// Dijkstra: min-heap {dist, node}</span>
+<span class="cm">// Merge K sorted: min-heap {val, listIdx}</span></div>
+    <div class="tip"><strong>⚡</strong> Top-K: min-heap size K is O(n log K)</div>
+  </div>
+
+  <!-- TRIE -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🔤</span><span class="name">Trie</span><span class="tag tag-g">O(L) per op</span></div>
+    <table>
+      <tr><th>Op</th><th>Time</th></tr>
+      <tr><td>Insert / Search</td><td class="g">O(L)</td></tr>
+      <tr><td>Space</td><td class="o">O(26×N×L)</td></tr>
+    </table>
+    <div class="snippet"><span class="kw">struct</span> <span class="ty">TrieNode</span> {
+  <span class="ty">TrieNode</span>* ch[26]={};
+  <span class="kw">bool</span> end=<span class="kw">false</span>;
+};
+<span class="cm">// insert: for c in word, ch[c-'a'] or new, end=true</span>
+<span class="cm">// search: traverse, return node->end</span>
+<span class="cm">// startsWith: traverse, return node != null</span>
+<span class="cm">// XOR Trie: max XOR pair in O(32n)</span></div>
+    <div class="tip"><strong>⚡</strong> Word Search II needs Trie + DFS on grid</div>
+  </div>
+
+  <!-- ===== ADVANCED ===== -->
+  <div class="section-label">Advanced Structures</div>
+
+  <!-- GRAPH -->
+  <div class="card wide">
+    <div class="card-title"><span class="icon">🕸️</span><span class="name">Graph Algorithms</span><span class="tag tag-p">Know ALL of these</span></div>
+    <table>
+      <tr><th>Problem type</th><th>Algorithm</th><th>Complexity</th></tr>
+      <tr><td>Unweighted shortest path</td><td class="g">BFS</td><td class="g">O(V+E)</td></tr>
+      <tr><td>Weighted, no neg edges</td><td class="p">Dijkstra</td><td class="p">O((V+E) log V)</td></tr>
+      <tr><td>Negative edge weights</td><td class="o">Bellman-Ford</td><td class="o">O(VE)</td></tr>
+      <tr><td>All-pairs shortest path</td><td class="r">Floyd-Warshall</td><td class="r">O(V³)</td></tr>
+      <tr><td>Ordering w/ dependencies</td><td class="g">Topological Sort</td><td class="g">O(V+E)</td></tr>
+      <tr><td>Minimum spanning tree</td><td class="p">Kruskal / Prim</td><td class="p">O(E log E)</td></tr>
+      <tr><td>Connected components</td><td class="g">DFS/BFS or DSU</td><td class="g">O(V+E)</td></tr>
+    </table>
+    <div class="snippet"><span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;&gt; adj(V);        <span class="cm">// adj list (unweighted)</span>
+<span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;&gt;&gt; adjW(V); <span class="cm">// adj list (weighted)</span>
+<span class="cm">// Topo sort: indegree[] → queue (Kahn's). If order.size()!=V → cycle!</span>
+<span class="cm">// DFS cycle (directed): WHITE=0, GRAY=1, BLACK=2. GRAY→GRAY = cycle</span></div>
+    <div class="tip"><strong>⚡</strong> Represent grid problems as implicit graphs — no need to build adj list</div>
+  </div>
+
+  <!-- DSU -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🧩</span><span class="name">Disjoint Set (DSU)</span><span class="tag tag-g">O(α(n)) ≈ O(1)</span></div>
+    <div class="snippet"><span class="kw">struct</span> <span class="ty">DSU</span> {
+  <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; p, rank;
+  <span class="ty">DSU</span>(<span class="kw">int</span> n):p(n),rank(n,0){<span class="kw">iota</span>(p.<span class="kw">begin</span>(),p.<span class="kw">end</span>(),0);}
+  <span class="kw">int</span> find(<span class="kw">int</span> x){ <span class="kw">return</span> p[x]!=x?p[x]=find(p[x]):x; }
+  <span class="kw">bool</span> unite(<span class="kw">int</span> x,<span class="kw">int</span> y){
+    x=find(x);y=find(y); <span class="kw">if</span>(x==y)<span class="kw">return false</span>;
+    <span class="kw">if</span>(rank[x]&lt;rank[y])<span class="kw">swap</span>(x,y);
+    p[y]=x; <span class="kw">if</span>(rank[x]==rank[y])rank[x]++;
+    <span class="kw">return true</span>;
+  }
+};</div>
+    <div class="tip"><strong>⚡</strong> unite() returns false → cycle! (Kruskal's / redundant edge)</div>
+  </div>
+
+  <!-- BLOOM -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🌸</span><span class="name">Bloom Filter</span><span class="tag tag-r">Probabilistic</span></div>
+    <div class="use">Bit array + k hash functions. <span>Space-efficient membership test.</span></div>
+    <table>
+      <tr><th>Result</th><th>Meaning</th></tr>
+      <tr><td class="r">All k bits = 1</td><td>Maybe present (FP possible)</td></tr>
+      <tr><td class="g">Any bit = 0</td><td>Definitely absent</td></tr>
+    </table>
+    <div class="snippet"><span class="cm">// FP rate ≈ (1 - e^(-kn/m))^k</span>
+<span class="cm">// n = items inserted</span>
+<span class="cm">// m = bit array size</span>
+<span class="cm">// k = # hash functions</span>
+<span class="cm">// Cannot delete! (→ Counting BF)</span>
+<span class="cm">// Used: Chrome safe browse, CDN</span></div>
+    <div class="tip"><strong>⚡</strong> No false negatives. FP rate decreases with larger m.</div>
+  </div>
+
+  <!-- LRU -->
+  <div class="card">
+    <div class="card-title"><span class="icon">⏱️</span><span class="name">LRU Cache</span><span class="tag tag-g">O(1) get+put</span></div>
+    <div class="use">HashMap + Doubly Linked List. <span>HashMap → O(1) find. DLL → O(1) reorder.</span></div>
+    <div class="snippet"><span class="cm">// On GET: move node to front (MRU end)</span>
+<span class="cm">// On PUT: insert front. If over cap → evict tail</span>
+<span class="cm">// Dummy head/tail sentinels → no null checks</span>
+<span class="cm">// C++ shortcut:</span>
+<span class="ty">list</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;&gt; order;
+<span class="ty">unordered_map</span>&lt;<span class="kw">int</span>,<span class="ty">list</span>::iterator&gt; mp;
+<span class="cm">// splice() moves node in O(1)!</span></div>
+    <div class="tip"><strong>⚡</strong> Extend to LFU: 3 hash maps + DLL per frequency</div>
+  </div>
+
+  <!-- ===== PATTERN REFERENCE ===== -->
+  <div class="section-label">Algorithm Pattern → Data Structure Cheatsheet</div>
+
+  <div class="card wide">
+    <div class="card-title">🎯 Pattern Matcher</div>
+    <table>
+      <tr><th>Pattern / Problem Type</th><th>Data Structure / Algorithm</th><th>Notes</th></tr>
+      <tr><td>Two Sum / complement lookup</td><td class="g">Hash Map</td><td>O(n)</td></tr>
+      <tr><td>Sliding window maximum</td><td class="g">Monotonic Deque</td><td>O(n)</td></tr>
+      <tr><td>Top K / Kth largest</td><td class="p">Min-Heap size K</td><td>O(n log K)</td></tr>
+      <tr><td>Next greater element</td><td class="o">Monotonic Stack</td><td>O(n)</td></tr>
+      <tr><td>BFS / shortest path (unweighted)</td><td class="g">Queue + visited[]</td><td>O(V+E)</td></tr>
+      <tr><td>DFS / explore all paths</td><td class="p">Stack / Recursion</td><td>O(V+E)</td></tr>
+      <tr><td>Prefix search / autocomplete</td><td class="g">Trie</td><td>O(L)</td></tr>
+      <tr><td>Connected components / cycle</td><td class="p">DSU or DFS</td><td>O(α(n))</td></tr>
+      <tr><td>Balanced parentheses</td><td class="o">Stack</td><td>O(n)</td></tr>
+      <tr><td>Sorted + range queries</td><td class="p">Ordered Map / Fenwick Tree</td><td>O(log n)</td></tr>
+      <tr><td>Task scheduling / dependencies</td><td class="g">Topological Sort (Kahn's)</td><td>O(V+E)</td></tr>
+      <tr><td>LRU / Cache eviction</td><td class="p">HashMap + DLL</td><td>O(1)</td></tr>
+      <tr><td>Membership in huge dataset</td><td class="o">Bloom Filter</td><td>Probabilistic</td></tr>
+      <tr><td>Inorder of BST</td><td class="g">Stack (iterative) or Recursion</td><td>Sorted output</td></tr>
+    </table>
+  </div>
+
+  <!-- STL QUICK REF -->
+  <div class="card wide">
+    <div class="card-title">⚙️ C++ STL Quick Reference</div>
+    <table>
+      <tr><th>Structure</th><th>Header</th><th>Declare</th><th>Key methods</th></tr>
+      <tr><td>vector</td><td class="p">&lt;vector&gt;</td><td>vector&lt;int&gt; v</td><td class="g">push_back, pop_back, size, [], begin/end, sort</td></tr>
+      <tr><td>stack</td><td class="p">&lt;stack&gt;</td><td>stack&lt;int&gt; s</td><td class="g">push, pop (void!), top, empty</td></tr>
+      <tr><td>queue</td><td class="p">&lt;queue&gt;</td><td>queue&lt;int&gt; q</td><td class="g">push, pop (void!), front, back, empty</td></tr>
+      <tr><td>deque</td><td class="p">&lt;deque&gt;</td><td>deque&lt;int&gt; d</td><td class="g">push/pop front+back, [], size</td></tr>
+      <tr><td>priority_queue</td><td class="p">&lt;queue&gt;</td><td>priority_queue&lt;int&gt;</td><td class="g">push, pop (void!), top, empty</td></tr>
+      <tr><td>unordered_map</td><td class="p">&lt;unordered_map&gt;</td><td>unordered_map&lt;K,V&gt;</td><td class="g">[], count, find, erase, size</td></tr>
+      <tr><td>map</td><td class="p">&lt;map&gt;</td><td>map&lt;K,V&gt;</td><td class="g">[], lower_bound, upper_bound (sorted)</td></tr>
+      <tr><td>unordered_set</td><td class="p">&lt;unordered_set&gt;</td><td>unordered_set&lt;int&gt;</td><td class="g">insert, count, erase, find</td></tr>
+      <tr><td>set</td><td class="p">&lt;set&gt;</td><td>set&lt;int&gt;</td><td class="g">insert, count, lower_bound (sorted)</td></tr>
+      <tr><td>list</td><td class="p">&lt;list&gt;</td><td>list&lt;int&gt;</td><td class="g">push_front/back, splice (O(1) move!)</td></tr>
+    </table>
+  </div>
+
+  <!-- GOTCHAS -->
+  <div class="card wide">
+    <div class="card-title">🚨 Common Interview Gotchas</div>
+    <table>
+      <tr><th>Mistake</th><th>Fix</th></tr>
+      <tr><td><span class="r">Using map[key]++ without check</span></td><td class="g">Use map.count(key) or map.find(key) first to avoid ghost keys</td></tr>
+      <tr><td><span class="r">Reading pop() return value</span></td><td class="g">stack/queue/pq pop() returns void — save top()/front() before pop()</td></tr>
+      <tr><td><span class="r">BST validate without bounds</span></td><td class="g">Pass (lo, hi) range — not just comparing to parent</td></tr>
+      <tr><td><span class="r">Overflow in sum / mid calculation</span></td><td class="g">Use long long; mid = lo + (hi-lo)/2 not (lo+hi)/2</td></tr>
+      <tr><td><span class="r">DFS on graph without visited[]</span></td><td class="g">Always mark visited before pushing — not after popping</td></tr>
+      <tr><td><span class="r">Heap delete-by-value</span></td><td class="g">PQ doesn't support it — use lazy deletion with a "dead" set</td></tr>
+      <tr><td><span class="r">DSU without path compression</span></td><td class="g">Always use both path compression AND union by rank</td></tr>
+      <tr><td><span class="r">Modifying vector while iterating</span></td><td class="g">Use index-based loop or collect changes and apply after</td></tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

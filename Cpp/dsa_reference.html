@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Reference — C++ Interview Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0b0d12;
+    --surface: #12151e;
+    --surface2: #1a1e2e;
+    --border: #252a3d;
+    --accent: #7c6af7;
+    --accent2: #36d7b7;
+    --accent3: #f7a04a;
+    --accent4: #f76a6a;
+    --text: #e4e8f5;
+    --muted: #7a82a6;
+    --code-bg: #0e1117;
+    --tag-bg: #1e2340;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-logo span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .sidebar nav a:hover,
+  .sidebar nav a.active {
+    color: var(--text);
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  .sidebar nav a .cat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    background: rgba(54,215,183,0.08);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .sidebar-section {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 16px 20px 6px;
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 240px;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f1220 0%, #151a2e 50%, #0b0d12 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 72px 64px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '{}';
+    position: absolute;
+    right: 80px;
+    top: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 200px;
+    font-weight: 700;
+    color: rgba(124,106,247,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.15;
+    max-width: 560px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 14px;
+    max-width: 480px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 36px;
+  }
+
+  .stat {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .content {
+    padding: 0 64px 80px;
+  }
+
+  /* DS CARD */
+  .ds-section {
+    margin-top: 64px;
+    scroll-margin-top: 24px;
+  }
+
+  .ds-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ds-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .ds-title {
+    flex: 1;
+  }
+
+  .ds-title h2 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .ds-title .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--tag-bg);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .tag.green { color: var(--accent2); border-color: rgba(54,215,183,0.2); background: rgba(54,215,183,0.06); }
+  .tag.purple { color: var(--accent); border-color: rgba(124,106,247,0.2); background: rgba(124,106,247,0.06); }
+  .tag.orange { color: var(--accent3); border-color: rgba(247,160,74,0.2); background: rgba(247,160,74,0.06); }
+  .tag.red { color: var(--accent4); border-color: rgba(247,106,106,0.2); background: rgba(247,106,106,0.06); }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .card h4 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .card ul {
+    list-style: none;
+    font-size: 14px;
+  }
+
+  .card ul li {
+    padding: 4px 0;
+    color: var(--text);
+    display: flex;
+    gap: 8px;
+  }
+
+  .card ul li::before {
+    content: '›';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* COMPLEXITY TABLE */
+  .complexity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .complexity-table th {
+    background: var(--surface2);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .complexity-table td {
+    padding: 9px 16px;
+    border-bottom: 1px solid rgba(37,42,61,0.6);
+    color: var(--text);
+  }
+
+  .complexity-table tr:last-child td { border-bottom: none; }
+
+  .o-n { color: var(--accent3); }
+  .o-1 { color: var(--accent2); }
+  .o-log { color: var(--accent); }
+  .o-n2 { color: var(--accent4); }
+
+  /* CODE */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .code-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  pre {
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c8d3f5;
+    tab-size: 4;
+  }
+
+  .kw { color: #c792ea; }
+  .ty { color: #82aaff; }
+  .fn { color: #82d9ff; }
+  .cm { color: #4d5977; font-style: italic; }
+  .st { color: #c3e88d; }
+  .nm { color: #f78c6c; }
+  .op { color: #89ddff; }
+
+  /* INTERVIEW TIPS */
+  .tip-box {
+    background: rgba(124,106,247,0.06);
+    border: 1px solid rgba(124,106,247,0.2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .tip-box-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tip-box ul {
+    list-style: none;
+    font-size: 14px;
+  }
+
+  .tip-box ul li {
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+    color: #bcc5e8;
+  }
+
+  .tip-box ul li::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 10px;
+    top: 6px;
+  }
+
+  .warn-box {
+    background: rgba(247,106,106,0.06);
+    border: 1px solid rgba(247,106,106,0.2);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #e8c5c5;
+    margin-bottom: 20px;
+  }
+
+  .warn-box strong { color: var(--accent4); }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 48px 0 0;
+    opacity: 0.3;
+  }
+
+  /* SCROLL */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* QUICK LINKS */
+  .quicklinks {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 64px;
+  }
+  .quicklinks-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .quicklinks-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .ql-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .ql-btn:hover {
+    background: rgba(124,106,247,0.12);
+    border-color: rgba(124,106,247,0.35);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+  .ql-btn .ql-emoji { font-size: 13px; }
+  .ql-btn .ql-cat {
+    font-size: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent2);
+    font-weight: 700;
+    letter-spacing: .5px;
+    border-left: 1px solid var(--border);
+    padding-left: 6px;
+    margin-left: 2px;
+  }
+
+  /* COMPARISON TABLE SECTION */
+  .compare-section {
+    padding: 48px 64px 0;
+  }
+  .compare-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .compare-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .compare-header p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .compare-table th {
+    background: var(--surface2);
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .compare-table th:first-child { border-radius: 12px 0 0 0; }
+  .compare-table th:last-child { border-radius: 0 12px 0 0; }
+  .compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(37,42,61,0.55);
+    vertical-align: middle;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(124,106,247,0.04); }
+  .compare-table td:first-child {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .compare-table td:first-child a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .compare-table td:first-child a:hover { color: var(--accent); }
+  .ct-1 { color: var(--accent2); }
+  .ct-logn { color: var(--accent); }
+  .ct-n { color: var(--accent3); }
+  .ct-n2 { color: var(--accent4); }
+  .ct-na { color: var(--muted); font-style: italic; }
+  .ct-badge {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .b-linear { background: rgba(124,106,247,0.12); color: var(--accent); }
+  .b-hash   { background: rgba(54,215,183,0.10); color: var(--accent2); }
+  .b-tree   { background: rgba(247,160,74,0.10); color: var(--accent3); }
+  .b-adv    { background: rgba(247,106,106,0.10); color: var(--accent4); }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .hero, .content { padding: 32px 20px; }
+    .quicklinks { padding: 16px 20px; }
+    .compare-section { padding: 32px 20px 0; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .compare-table { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span>DSA / C++</span>
+    <p>Interview Reference Guide</p>
+  </div>
+  <nav>
+    <div class="sidebar-section">Linear</div>
+    <a href="#array">📦 Array</a>
+    <a href="#linked-list">🔗 Linked List</a>
+    <a href="#stack">📚 Stack</a>
+    <a href="#queue">🚦 Queue</a>
+    <a href="#deque">↔️ Deque</a>
+
+    <div class="sidebar-section">Hashing</div>
+    <a href="#hashmap">🗺️ Hash Map</a>
+    <a href="#hashset">🔵 Hash Set</a>
+
+    <div class="sidebar-section">Trees</div>
+    <a href="#tree">🌳 Tree</a>
+    <a href="#bst">🔍 Binary Search Tree</a>
+    <a href="#heap">⛰️ Heap</a>
+    <a href="#trie">🔤 Trie</a>
+
+    <div class="sidebar-section">Advanced</div>
+    <a href="#graph">🕸️ Graph</a>
+    <a href="#dsu">🧩 Disjoint Set</a>
+    <a href="#bloom">🌸 Bloom Filter</a>
+    <a href="#lru">⏱️ LRU Cache</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">// C++ Data Structures</div>
+    <h1>Master <em>Every</em><br>Data Structure</h1>
+    <p class="hero-sub">A complete interview reference — concepts, complexity, C++ implementation, and what interviewers actually test.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">15</div>
+        <div class="stat-label">Structures</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">C++</div>
+        <div class="stat-label">Language</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Interview Wins</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS STRIP -->
+  <div class="quicklinks">
+    <div class="quicklinks-label">// Jump to structure</div>
+    <div class="quicklinks-grid">
+      <a class="ql-btn" href="#array"><span class="ql-emoji">📦</span> Array <span class="ql-cat">LINEAR</span></a>
+      <a class="ql-btn" href="#linked-list"><span class="ql-emoji">🔗</span> Linked List <span class="ql-cat">LINEAR</span></a>
+      <a class="ql-btn" href="#stack"><span class="ql-emoji">📚</span> Stack <span class="ql-cat">LINEAR</span></a>
+      <a class="ql-btn" href="#queue"><span class="ql-emoji">🚦</span> Queue <span class="ql-cat">LINEAR</span></a>
+      <a class="ql-btn" href="#deque"><span class="ql-emoji">↔️</span> Deque <span class="ql-cat">LINEAR</span></a>
+      <a class="ql-btn" href="#hashmap"><span class="ql-emoji">🗺️</span> Hash Map <span class="ql-cat">HASH</span></a>
+      <a class="ql-btn" href="#hashset"><span class="ql-emoji">🔵</span> Hash Set <span class="ql-cat">HASH</span></a>
+      <a class="ql-btn" href="#tree"><span class="ql-emoji">🌳</span> Tree <span class="ql-cat">TREE</span></a>
+      <a class="ql-btn" href="#bst"><span class="ql-emoji">🔍</span> BST <span class="ql-cat">TREE</span></a>
+      <a class="ql-btn" href="#heap"><span class="ql-emoji">⛰️</span> Heap <span class="ql-cat">TREE</span></a>
+      <a class="ql-btn" href="#trie"><span class="ql-emoji">🔤</span> Trie <span class="ql-cat">TREE</span></a>
+      <a class="ql-btn" href="#graph"><span class="ql-emoji">🕸️</span> Graph <span class="ql-cat">ADV</span></a>
+      <a class="ql-btn" href="#dsu"><span class="ql-emoji">🧩</span> Disjoint Set <span class="ql-cat">ADV</span></a>
+      <a class="ql-btn" href="#bloom"><span class="ql-emoji">🌸</span> Bloom Filter <span class="ql-cat">ADV</span></a>
+      <a class="ql-btn" href="#lru"><span class="ql-emoji">⏱️</span> LRU Cache <span class="ql-cat">ADV</span></a>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare-section">
+    <div class="compare-header">
+      <h2>All Structures — At a Glance</h2>
+      <p>Click any name to jump to its full section</p>
+    </div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Structure</th>
+          <th>Category</th>
+          <th>Access</th>
+          <th>Search</th>
+          <th>Insert</th>
+          <th>Delete</th>
+          <th>Space</th>
+          <th>Ordered?</th>
+          <th>C++ Type</th>
+          <th>Best For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="#array">📦 Array</a></td>
+          <td><span class="ct-badge b-linear">Linear</span></td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n) mid</td>
+          <td class="ct-n">O(n) mid</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">Yes (index)</td>
+          <td>vector&lt;T&gt;</td>
+          <td>Random access, cache-friendly iteration</td>
+        </tr>
+        <tr>
+          <td><a href="#linked-list">🔗 Linked List</a></td>
+          <td><span class="ct-badge b-linear">Linear</span></td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">O(1) known</td>
+          <td class="ct-1">O(1) doubly</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No</td>
+          <td>list&lt;T&gt;</td>
+          <td>Frequent mid-inserts, LRU, DLL patterns</td>
+        </tr>
+        <tr>
+          <td><a href="#stack">📚 Stack</a></td>
+          <td><span class="ct-badge b-linear">Linear</span></td>
+          <td class="ct-1">O(1) top</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">LIFO</td>
+          <td>stack&lt;T&gt;</td>
+          <td>Undo, DFS, balanced parens, monotonic</td>
+        </tr>
+        <tr>
+          <td><a href="#queue">🚦 Queue</a></td>
+          <td><span class="ct-badge b-linear">Linear</span></td>
+          <td class="ct-1">O(1) front</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">FIFO</td>
+          <td>queue&lt;T&gt;</td>
+          <td>BFS, level-order traversal, scheduling</td>
+        </tr>
+        <tr>
+          <td><a href="#deque">↔️ Deque</a></td>
+          <td><span class="ct-badge b-linear">Linear</span></td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">O(1) ends</td>
+          <td class="ct-1">O(1) ends</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No</td>
+          <td>deque&lt;T&gt;</td>
+          <td>Sliding window max, 0-1 BFS</td>
+        </tr>
+        <tr>
+          <td><a href="#hashmap">🗺️ Hash Map</a></td>
+          <td><span class="ct-badge b-hash">Hash</span></td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No*</td>
+          <td>unordered_map</td>
+          <td>Frequency count, two-sum, caching</td>
+        </tr>
+        <tr>
+          <td><a href="#hashset">🔵 Hash Set</a></td>
+          <td><span class="ct-badge b-hash">Hash</span></td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-1">O(1) avg</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No*</td>
+          <td>unordered_set</td>
+          <td>Dedup, membership test, visited tracking</td>
+        </tr>
+        <tr>
+          <td><a href="#tree">🌳 Binary Tree</a></td>
+          <td><span class="ct-badge b-tree">Tree</span></td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No</td>
+          <td>TreeNode*</td>
+          <td>Hierarchical data, DFS/BFS traversal</td>
+        </tr>
+        <tr>
+          <td><a href="#bst">🔍 BST</a></td>
+          <td><span class="ct-badge b-tree">Tree</span></td>
+          <td class="ct-logn">O(log n)*</td>
+          <td class="ct-logn">O(log n)*</td>
+          <td class="ct-logn">O(log n)*</td>
+          <td class="ct-logn">O(log n)*</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-1">Yes</td>
+          <td>set / map</td>
+          <td>Sorted data, range queries, LCA</td>
+        </tr>
+        <tr>
+          <td><a href="#heap">⛰️ Heap / PQ</a></td>
+          <td><span class="ct-badge b-tree">Tree</span></td>
+          <td class="ct-1">O(1) max</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-logn">O(log n)</td>
+          <td class="ct-logn">O(log n)</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">Partial</td>
+          <td>priority_queue</td>
+          <td>Top-K, Dijkstra, merge K lists</td>
+        </tr>
+        <tr>
+          <td><a href="#trie">🔤 Trie</a></td>
+          <td><span class="ct-badge b-tree">Tree</span></td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-1">O(L)</td>
+          <td class="ct-1">O(L)</td>
+          <td class="ct-1">O(L)</td>
+          <td class="ct-n">O(N·L)</td>
+          <td class="ct-1">Prefix</td>
+          <td>TrieNode*</td>
+          <td>Autocomplete, prefix search, Word Search II</td>
+        </tr>
+        <tr>
+          <td><a href="#graph">🕸️ Graph</a></td>
+          <td><span class="ct-badge b-adv">Advanced</span></td>
+          <td class="ct-1">O(1)*</td>
+          <td class="ct-n">O(V+E)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(E)</td>
+          <td class="ct-n">O(V+E)</td>
+          <td class="ct-na">Varies</td>
+          <td>vector&lt;vector&gt;</td>
+          <td>Networks, shortest path, topo sort</td>
+        </tr>
+        <tr>
+          <td><a href="#dsu">🧩 Disjoint Set</a></td>
+          <td><span class="ct-badge b-adv">Advanced</span></td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-1">O(α(n))</td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-n">O(n)</td>
+          <td class="ct-na">No</td>
+          <td>int[] parent</td>
+          <td>Connected components, cycle detect, Kruskal</td>
+        </tr>
+        <tr>
+          <td><a href="#bloom">🌸 Bloom Filter</a></td>
+          <td><span class="ct-badge b-adv">Advanced</span></td>
+          <td class="ct-na">N/A</td>
+          <td class="ct-1">O(k)</td>
+          <td class="ct-1">O(k)</td>
+          <td class="ct-na">No delete</td>
+          <td class="ct-1">O(m) bits</td>
+          <td class="ct-na">No</td>
+          <td>vector&lt;bool&gt;</td>
+          <td>Space-efficient membership (FP ok, FN never)</td>
+        </tr>
+        <tr>
+          <td><a href="#lru">⏱️ LRU Cache</a></td>
+          <td><span class="ct-badge b-adv">Advanced</span></td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-1">O(1)</td>
+          <td class="ct-n">O(cap)</td>
+          <td class="ct-na">Recency</td>
+          <td>map + list</td>
+          <td>Cache eviction, OS page replacement</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;font-family:'JetBrains Mono',monospace;">* BST ops are O(log n) only when balanced (AVL/Red-Black). Unbalanced degrades to O(n). &nbsp;·&nbsp; unordered_map/set have O(n) worst-case due to hash collisions. &nbsp;·&nbsp; L = word length, k = # hash functions.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- ==================== ARRAY ==================== -->
+    <section class="ds-section" id="array">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(124,106,247,0.12)">📦</div>
+        <div class="ds-title">
+          <h2>Array</h2>
+          <div class="subtitle">std::vector / int arr[] / std::array</div>
+        </div>
+        <div class="tags">
+          <span class="tag purple">Contiguous</span>
+          <span class="tag green">O(1) access</span>
+          <span class="tag orange">Cache-friendly</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>A fixed or dynamic sequence of elements stored in contiguous memory. The foundation of nearly all algorithms. Random access in O(1) via index arithmetic.</p>
+        </div>
+        <div class="card">
+          <h4>When to use</h4>
+          <ul>
+            <li>Need fast random access by index</li>
+            <li>Iteration over all elements</li>
+            <li>Prefix sums, sliding windows, two pointers</li>
+            <li>As backing store for other structures</li>
+          </ul>
+        </div>
+      </div>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Time</th><th>Space</th></tr>
+        <tr><td>Access by index</td><td class="o-1">O(1)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Search (unsorted)</td><td class="o-n">O(n)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Search (sorted, binary)</td><td class="o-log">O(log n)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Insert at end (vector)</td><td class="o-1">O(1) amortized</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Insert at middle</td><td class="o-n">O(n)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Delete at middle</td><td class="o-n">O(n)</td><td class="o-1">O(1)</td></tr>
+      </table>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">array essentials</span></div>
+        <pre><span class="cm">// Static array</span>
+<span class="kw">int</span> arr[<span class="nm">5</span>] = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>};
+
+<span class="cm">// Dynamic array (preferred)</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>};
+v.<span class="fn">push_back</span>(<span class="nm">4</span>);       <span class="cm">// O(1) amortized</span>
+v.<span class="fn">pop_back</span>();          <span class="cm">// O(1)</span>
+v[<span class="nm">2</span>];                  <span class="cm">// O(1) access</span>
+v.<span class="fn">size</span>();              <span class="cm">// number of elements</span>
+<span class="fn">sort</span>(v.<span class="fn">begin</span>(), v.<span class="fn">end</span>());  <span class="cm">// O(n log n)</span>
+
+<span class="cm">// Two-pointer pattern (sorted array)</span>
+<span class="kw">int</span> l = <span class="nm">0</span>, r = v.<span class="fn">size</span>() - <span class="nm">1</span>;
+<span class="kw">while</span> (l < r) {
+    <span class="kw">if</span> (v[l] + v[r] <span class="op">==</span> target) { <span class="cm">/* found */</span> <span class="kw">break</span>; }
+    <span class="kw">else if</span> (v[l] + v[r] < target) l++;
+    <span class="kw">else</span> r--;
+}
+
+<span class="cm">// Prefix sum (range sum in O(1))</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; prefix(n + <span class="nm">1</span>, <span class="nm">0</span>);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < n; i++)
+    prefix[i+<span class="nm">1</span>] = prefix[i] + arr[i];
+<span class="cm">// Sum from l to r: prefix[r+1] - prefix[l]</span></pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Sliding window and two-pointer are the most common array patterns</li>
+          <li>Off-by-one errors on bounds — always double-check i &lt; n vs i &lt;= n</li>
+          <li>Use <code>INT_MAX / INT_MIN</code> as sentinels; mention overflow risk</li>
+          <li>Mention <code>reserve()</code> to avoid reallocations in hot loops</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== LINKED LIST ==================== -->
+    <section class="ds-section" id="linked-list">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(54,215,183,0.1)">🔗</div>
+        <div class="ds-title">
+          <h2>Linked List</h2>
+          <div class="subtitle">std::list / std::forward_list / custom node</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) insert/delete</span>
+          <span class="tag red">O(n) access</span>
+          <span class="tag orange">No contiguous memory</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>Nodes linked via pointers. Singly linked (next only), doubly linked (next + prev), or circular. Insertion/deletion at known pointer is O(1) — no shifting.</p>
+        </div>
+        <div class="card">
+          <h4>When to use</h4>
+          <ul>
+            <li>Frequent insertions/deletions in the middle</li>
+            <li>Implementing stacks, queues, LRU Cache</li>
+            <li>When size is unknown / highly dynamic</li>
+            <li>When pointer stability matters</li>
+          </ul>
+        </div>
+      </div>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>Singly</th><th>Doubly</th></tr>
+        <tr><td>Access / Search</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+        <tr><td>Insert at head</td><td class="o-1">O(1)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Insert at tail (with tail ptr)</td><td class="o-1">O(1)</td><td class="o-1">O(1)</td></tr>
+        <tr><td>Delete at known node</td><td class="o-n">O(n)*</td><td class="o-1">O(1)</td></tr>
+      </table>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">singly linked list + classic patterns</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">Node</span> {
+    <span class="kw">int</span> val;
+    <span class="ty">Node</span>* next;
+    <span class="ty">Node</span>(<span class="kw">int</span> v) : val(v), next(<span class="kw">nullptr</span>) {}
+};
+
+<span class="cm">// Reverse a linked list (iterative)</span>
+<span class="ty">Node</span>* <span class="fn">reverse</span>(<span class="ty">Node</span>* head) {
+    <span class="ty">Node</span>* prev = <span class="kw">nullptr</span>, *curr = head;
+    <span class="kw">while</span> (curr) {
+        <span class="ty">Node</span>* nxt = curr->next;
+        curr->next = prev;
+        prev = curr; curr = nxt;
+    }
+    <span class="kw">return</span> prev;
+}
+
+<span class="cm">// Detect cycle — Floyd's tortoise & hare</span>
+<span class="kw">bool</span> <span class="fn">hasCycle</span>(<span class="ty">Node</span>* head) {
+    <span class="ty">Node</span>* slow = head, *fast = head;
+    <span class="kw">while</span> (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        <span class="kw">if</span> (slow <span class="op">==</span> fast) <span class="kw">return true</span>;
+    }
+    <span class="kw">return false</span>;
+}
+
+<span class="cm">// Find middle node</span>
+<span class="ty">Node</span>* <span class="fn">findMid</span>(<span class="ty">Node</span>* head) {
+    <span class="ty">Node</span>* slow = head, *fast = head;
+    <span class="kw">while</span> (fast->next && fast->next->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    <span class="kw">return</span> slow; <span class="cm">// slow is the middle</span>
+}</pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Always check for null head and single-node edge cases</li>
+          <li>Fast/slow pointer (Floyd's) solves: cycle, middle, nth-from-end</li>
+          <li>Dummy head node simplifies insertion/deletion logic at head</li>
+          <li>For merge sort on LL — find mid, split, sort halves, merge</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== STACK ==================== -->
+    <section class="ds-section" id="stack">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(247,160,74,0.1)">📚</div>
+        <div class="ds-title">
+          <h2>Stack</h2>
+          <div class="subtitle">std::stack / LIFO — Last In First Out</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) push/pop</span>
+          <span class="tag orange">LIFO</span>
+          <span class="tag purple">Backtracking</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>A LIFO structure. Push adds to top, pop removes from top. Used wherever you need to "undo", track state, or process the most-recently-seen item.</p>
+        </div>
+        <div class="card">
+          <h4>Classic use cases</h4>
+          <ul>
+            <li>Balanced parentheses / bracket matching</li>
+            <li>Next Greater Element (monotonic stack)</li>
+            <li>DFS iteratively</li>
+            <li>Expression evaluation (infix → postfix)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">stack + monotonic stack pattern</span></div>
+        <pre><span class="ty">stack</span>&lt;<span class="kw">int</span>&gt; st;
+st.<span class="fn">push</span>(<span class="nm">5</span>);      <span class="cm">// push</span>
+st.<span class="fn">top</span>();       <span class="cm">// peek — no removal</span>
+st.<span class="fn">pop</span>();       <span class="cm">// remove top (returns void!)</span>
+st.<span class="fn">empty</span>();     <span class="cm">// check empty</span>
+st.<span class="fn">size</span>();      <span class="cm">// element count</span>
+
+<span class="cm">// Valid parentheses</span>
+<span class="kw">bool</span> <span class="fn">isValid</span>(<span class="ty">string</span> s) {
+    <span class="ty">stack</span>&lt;<span class="kw">char</span>&gt; st;
+    <span class="kw">for</span> (<span class="kw">char</span> c : s) {
+        <span class="kw">if</span> (c == <span class="st">'('</span> || c == <span class="st">'{'</span> || c == <span class="st">'['</span>) st.<span class="fn">push</span>(c);
+        <span class="kw">else</span> {
+            <span class="kw">if</span> (st.<span class="fn">empty</span>()) <span class="kw">return false</span>;
+            <span class="kw">char</span> top = st.<span class="fn">top</span>(); st.<span class="fn">pop</span>();
+            <span class="kw">if</span> (c == <span class="st">')'</span> && top != <span class="st">'('</span>) <span class="kw">return false</span>;
+            <span class="kw">if</span> (c == <span class="st">'}'</span> && top != <span class="st">'{'</span>) <span class="kw">return false</span>;
+            <span class="kw">if</span> (c == <span class="st">']'</span> && top != <span class="st">'['</span>) <span class="kw">return false</span>;
+        }
+    }
+    <span class="kw">return</span> st.<span class="fn">empty</span>();
+}
+
+<span class="cm">// Monotonic stack — Next Greater Element</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">nextGreater</span>(<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;& nums) {
+    <span class="kw">int</span> n = nums.<span class="fn">size</span>();
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; res(n, -<span class="nm">1</span>);
+    <span class="ty">stack</span>&lt;<span class="kw">int</span>&gt; st; <span class="cm">// stores indices</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < n; i++) {
+        <span class="kw">while</span> (!st.<span class="fn">empty</span>() && nums[st.<span class="fn">top</span>()] < nums[i]) {
+            res[st.<span class="fn">top</span>()] = nums[i];
+            st.<span class="fn">pop</span>();
+        }
+        st.<span class="fn">push</span>(i);
+    }
+    <span class="kw">return</span> res;
+}</pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Monotonic stack solves: NGE, daily temperatures, largest rectangle in histogram</li>
+          <li><code>st.pop()</code> returns void — save top before popping</li>
+          <li>Implement stack with two queues / min-stack are classic problems</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== QUEUE ==================== -->
+    <section class="ds-section" id="queue">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(54,215,183,0.1)">🚦</div>
+        <div class="ds-title">
+          <h2>Queue</h2>
+          <div class="subtitle">std::queue / FIFO — First In First Out</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) enqueue/dequeue</span>
+          <span class="tag orange">FIFO</span>
+          <span class="tag purple">BFS</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>FIFO — enqueue at back, dequeue at front. The natural structure for BFS because it processes nodes level-by-level.</p>
+        </div>
+        <div class="card">
+          <h4>When to use</h4>
+          <ul>
+            <li>BFS on trees and graphs</li>
+            <li>Level-order traversal</li>
+            <li>Task scheduling, producer-consumer</li>
+            <li>Sliding window maximum (with deque)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">queue + BFS template</span></div>
+        <pre><span class="ty">queue</span>&lt;<span class="kw">int</span>&gt; q;
+q.<span class="fn">push</span>(<span class="nm">1</span>);      <span class="cm">// enqueue</span>
+q.<span class="fn">front</span>();     <span class="cm">// peek front</span>
+q.<span class="fn">back</span>();      <span class="cm">// peek back</span>
+q.<span class="fn">pop</span>();       <span class="cm">// dequeue (returns void)</span>
+q.<span class="fn">empty</span>();
+
+<span class="cm">// BFS template (graph/tree)</span>
+<span class="kw">void</span> <span class="fn">bfs</span>(<span class="kw">int</span> start, <span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;&gt;& adj) {
+    <span class="ty">vector</span>&lt;<span class="kw">bool</span>&gt; visited(adj.<span class="fn">size</span>(), <span class="kw">false</span>);
+    <span class="ty">queue</span>&lt;<span class="kw">int</span>&gt; q;
+    q.<span class="fn">push</span>(start);
+    visited[start] = <span class="kw">true</span>;
+    <span class="kw">while</span> (!q.<span class="fn">empty</span>()) {
+        <span class="kw">int</span> node = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>();
+        <span class="cm">// process node</span>
+        <span class="kw">for</span> (<span class="kw">int</span> nb : adj[node]) {
+            <span class="kw">if</span> (!visited[nb]) {
+                visited[nb] = <span class="kw">true</span>;
+                q.<span class="fn">push</span>(nb);
+            }
+        }
+    }
+}
+
+<span class="cm">// Priority queue (max-heap by default)</span>
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>&gt; maxPQ;
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>, <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;, <span class="ty">greater</span>&lt;<span class="kw">int</span>&gt;&gt; minPQ;</pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== DEQUE ==================== -->
+    <section class="ds-section" id="deque">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(247,106,106,0.1)">↔️</div>
+        <div class="ds-title">
+          <h2>Deque</h2>
+          <div class="subtitle">std::deque — Double-Ended Queue</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) both ends</span>
+          <span class="tag purple">Sliding window</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>Push and pop from both front and back in O(1). More flexible than queue or stack. Used for the sliding window maximum problem with a monotonic deque.</p>
+        </div>
+        <div class="card">
+          <h4>When to use</h4>
+          <ul>
+            <li>Sliding window maximum/minimum</li>
+            <li>BFS where priority matters at front</li>
+            <li>Palindrome checking</li>
+            <li>0-1 BFS (Dijkstra variant)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">deque + sliding window max</span></div>
+        <pre><span class="ty">deque</span>&lt;<span class="kw">int</span>&gt; dq;
+dq.<span class="fn">push_back</span>(<span class="nm">1</span>);   dq.<span class="fn">push_front</span>(<span class="nm">0</span>);
+dq.<span class="fn">pop_back</span>();     dq.<span class="fn">pop_front</span>();
+dq.<span class="fn">front</span>();        dq.<span class="fn">back</span>();
+
+<span class="cm">// Sliding window maximum (k-size window)</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">maxSlidingWindow</span>(<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;& nums, <span class="kw">int</span> k) {
+    <span class="ty">deque</span>&lt;<span class="kw">int</span>&gt; dq;  <span class="cm">// stores indices (decreasing values)</span>
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; res;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < nums.<span class="fn">size</span>(); i++) {
+        <span class="cm">// remove out-of-window indices</span>
+        <span class="kw">if</span> (!dq.<span class="fn">empty</span>() && dq.<span class="fn">front</span>() <= i - k) dq.<span class="fn">pop_front</span>();
+        <span class="cm">// maintain decreasing order</span>
+        <span class="kw">while</span> (!dq.<span class="fn">empty</span>() && nums[dq.<span class="fn">back</span>()] < nums[i]) dq.<span class="fn">pop_back</span>();
+        dq.<span class="fn">push_back</span>(i);
+        <span class="kw">if</span> (i >= k - <span class="nm">1</span>) res.<span class="fn">push_back</span>(nums[dq.<span class="fn">front</span>()]);
+    }
+    <span class="kw">return</span> res;
+}</pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== HASH MAP ==================== -->
+    <section class="ds-section" id="hashmap">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(124,106,247,0.12)">🗺️</div>
+        <div class="ds-title">
+          <h2>Hash Map</h2>
+          <div class="subtitle">std::unordered_map / std::map</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) avg lookup</span>
+          <span class="tag orange">O(n) worst case</span>
+          <span class="tag purple">Key-Value pairs</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>Key-value store backed by a hash table. <code>unordered_map</code> gives O(1) average for all operations. <code>map</code> uses a red-black tree and gives O(log n) but maintains sorted order.</p>
+        </div>
+        <div class="card">
+          <h4>When to use</h4>
+          <ul>
+            <li>Frequency counting of elements</li>
+            <li>Two-sum / complement lookup</li>
+            <li>Caching intermediate results</li>
+            <li>Grouping (group anagrams, etc.)</li>
+          </ul>
+        </div>
+      </div>
+      <table class="complexity-table">
+        <tr><th>Operation</th><th>unordered_map</th><th>map (ordered)</th></tr>
+        <tr><td>Insert / Erase / Find</td><td class="o-1">O(1) avg</td><td class="o-log">O(log n)</td></tr>
+        <tr><td>Iteration in order</td><td class="o-n">Not guaranteed</td><td class="o-n">O(n)</td></tr>
+        <tr><td>Space</td><td class="o-n">O(n)</td><td class="o-n">O(n)</td></tr>
+      </table>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">hash map patterns</span></div>
+        <pre><span class="ty">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; freq;
+
+<span class="cm">// Frequency count</span>
+<span class="kw">for</span> (<span class="kw">int</span> x : nums) freq[x]++;
+
+<span class="cm">// Two Sum</span>
+<span class="ty">unordered_map</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; seen;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < nums.<span class="fn">size</span>(); i++) {
+    <span class="kw">int</span> comp = target - nums[i];
+    <span class="kw">if</span> (seen.<span class="fn">count</span>(comp)) <span class="kw">return</span> {seen[comp], i};
+    seen[nums[i]] = i;
+}
+
+<span class="cm">// Safe access</span>
+<span class="kw">if</span> (freq.<span class="fn">find</span>(key) != freq.<span class="fn">end</span>()) { <span class="cm">/* key exists */</span> }
+freq.<span class="fn">count</span>(key); <span class="cm">// 0 or 1 for map</span>
+
+<span class="cm">// Ordered map — useful for range queries</span>
+<span class="ty">map</span>&lt;<span class="kw">int</span>, <span class="kw">int</span>&gt; m;
+<span class="kw">auto</span> it = m.<span class="fn">lower_bound</span>(k); <span class="cm">// first key >= k</span>
+<span class="kw">auto</span> it2 = m.<span class="fn">upper_bound</span>(k); <span class="cm">// first key > k</span></pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Accessing a non-existent key via <code>[]</code> inserts it with value 0 — use <code>.count()</code> or <code>.find()</code></li>
+          <li>Custom hash needed for pair/vector keys in unordered_map</li>
+          <li>Worst-case O(n) due to collisions — mention this in interviews</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== HASH SET ==================== -->
+    <section class="ds-section" id="hashset">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(54,215,183,0.1)">🔵</div>
+        <div class="ds-title">
+          <h2>Hash Set</h2>
+          <div class="subtitle">std::unordered_set / std::set</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) lookup</span>
+          <span class="tag purple">No duplicates</span>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">hash set — dedup and membership</span></div>
+        <pre><span class="ty">unordered_set</span>&lt;<span class="kw">int</span>&gt; s;
+s.<span class="fn">insert</span>(<span class="nm">5</span>);
+s.<span class="fn">count</span>(<span class="nm">5</span>);   <span class="cm">// 1 if present, 0 if not</span>
+s.<span class="fn">erase</span>(<span class="nm">5</span>);
+
+<span class="cm">// Longest Consecutive Sequence — O(n)</span>
+<span class="ty">unordered_set</span>&lt;<span class="kw">int</span>&gt; numSet(nums.<span class="fn">begin</span>(), nums.<span class="fn">end</span>());
+<span class="kw">int</span> longest = <span class="nm">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> n : numSet) {
+    <span class="kw">if</span> (!numSet.<span class="fn">count</span>(n - <span class="nm">1</span>)) { <span class="cm">// start of sequence</span>
+        <span class="kw">int</span> len = <span class="nm">1</span>;
+        <span class="kw">while</span> (numSet.<span class="fn">count</span>(n + len)) len++;
+        longest = <span class="fn">max</span>(longest, len);
+    }
+}
+
+<span class="cm">// set (ordered, sorted iteration)</span>
+<span class="ty">set</span>&lt;<span class="kw">int</span>&gt; ordered;
+ordered.<span class="fn">lower_bound</span>(<span class="nm">5</span>); <span class="cm">// iterator to first >= 5</span></pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== TREE ==================== -->
+    <section class="ds-section" id="tree">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(247,160,74,0.1)">🌳</div>
+        <div class="ds-title">
+          <h2>Tree</h2>
+          <div class="subtitle">Binary Tree — recursive node structure</div>
+        </div>
+        <div class="tags">
+          <span class="tag orange">Hierarchical</span>
+          <span class="tag purple">DFS / BFS</span>
+          <span class="tag green">O(h) operations</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Traversal Orders</h4>
+          <ul>
+            <li>Inorder (L → Root → R): sorted BST output</li>
+            <li>Preorder (Root → L → R): copy tree, serialize</li>
+            <li>Postorder (L → R → Root): delete tree, height</li>
+            <li>Level-order (BFS): shortest path, zigzag</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Key Properties</h4>
+          <ul>
+            <li>Height h: O(log n) balanced, O(n) skewed</li>
+            <li>n nodes → at most n-1 edges</li>
+            <li>Full: every node has 0 or 2 children</li>
+            <li>Complete: filled left-to-right, last level</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">binary tree traversals + diameter</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">TreeNode</span> {
+    <span class="kw">int</span> val;
+    <span class="ty">TreeNode</span> *left, *right;
+    <span class="ty">TreeNode</span>(<span class="kw">int</span> v) : val(v), left(<span class="kw">nullptr</span>), right(<span class="kw">nullptr</span>) {}
+};
+
+<span class="cm">// Inorder — iterative</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">inorder</span>(<span class="ty">TreeNode</span>* root) {
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; res;
+    <span class="ty">stack</span>&lt;<span class="ty">TreeNode</span>*&gt; st;
+    <span class="ty">TreeNode</span>* curr = root;
+    <span class="kw">while</span> (curr || !st.<span class="fn">empty</span>()) {
+        <span class="kw">while</span> (curr) { st.<span class="fn">push</span>(curr); curr = curr->left; }
+        curr = st.<span class="fn">top</span>(); st.<span class="fn">pop</span>();
+        res.<span class="fn">push_back</span>(curr->val);
+        curr = curr->right;
+    }
+    <span class="kw">return</span> res;
+}
+
+<span class="cm">// Max depth / height</span>
+<span class="kw">int</span> <span class="fn">maxDepth</span>(<span class="ty">TreeNode</span>* root) {
+    <span class="kw">if</span> (!root) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="fn">max</span>(<span class="fn">maxDepth</span>(root->left), <span class="fn">maxDepth</span>(root->right));
+}
+
+<span class="cm">// Diameter of binary tree</span>
+<span class="kw">int</span> diameter = <span class="nm">0</span>;
+<span class="kw">int</span> <span class="fn">dfs</span>(<span class="ty">TreeNode</span>* node) {
+    <span class="kw">if</span> (!node) <span class="kw">return</span> <span class="nm">0</span>;
+    <span class="kw">int</span> L = <span class="fn">dfs</span>(node->left), R = <span class="fn">dfs</span>(node->right);
+    diameter = <span class="fn">max</span>(diameter, L + R); <span class="cm">// path through this node</span>
+    <span class="kw">return</span> <span class="nm">1</span> + <span class="fn">max</span>(L, R);
+}</pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== BST ==================== -->
+    <section class="ds-section" id="bst">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(124,106,247,0.12)">🔍</div>
+        <div class="ds-title">
+          <h2>Binary Search Tree</h2>
+          <div class="subtitle">Left < Root < Right — maintained property</div>
+        </div>
+        <div class="tags">
+          <span class="tag purple">O(log n) balanced</span>
+          <span class="tag red">O(n) degenerate</span>
+          <span class="tag green">Ordered</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>BST Property</h4>
+          <p>Every left subtree has values smaller than root; every right subtree has values larger. Inorder traversal yields sorted order. Without balancing (AVL/RB), degrades to O(n).</p>
+        </div>
+        <div class="card">
+          <h4>Common problems</h4>
+          <ul>
+            <li>Validate a BST (track min/max range)</li>
+            <li>Lowest Common Ancestor</li>
+            <li>Kth smallest element (inorder)</li>
+            <li>Convert sorted array to BST</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">BST operations + LCA</span></div>
+        <pre><span class="cm">// Search in BST</span>
+<span class="ty">TreeNode</span>* <span class="fn">search</span>(<span class="ty">TreeNode</span>* root, <span class="kw">int</span> key) {
+    <span class="kw">if</span> (!root || root->val <span class="op">==</span> key) <span class="kw">return</span> root;
+    <span class="kw">return</span> key < root->val ? <span class="fn">search</span>(root->left, key)
+                           : <span class="fn">search</span>(root->right, key);
+}
+
+<span class="cm">// Validate BST</span>
+<span class="kw">bool</span> <span class="fn">isValid</span>(<span class="ty">TreeNode</span>* node, <span class="kw">long</span> lo, <span class="kw">long</span> hi) {
+    <span class="kw">if</span> (!node) <span class="kw">return true</span>;
+    <span class="kw">if</span> (node->val <= lo || node->val >= hi) <span class="kw">return false</span>;
+    <span class="kw">return</span> <span class="fn">isValid</span>(node->left, lo, node->val) &&
+           <span class="fn">isValid</span>(node->right, node->val, hi);
+}
+<span class="cm">// Call: isValid(root, LONG_MIN, LONG_MAX)</span>
+
+<span class="cm">// Lowest Common Ancestor (BST)</span>
+<span class="ty">TreeNode</span>* <span class="fn">lca</span>(<span class="ty">TreeNode</span>* root, <span class="ty">TreeNode</span>* p, <span class="ty">TreeNode</span>* q) {
+    <span class="kw">if</span> (p->val < root->val && q->val < root->val)
+        <span class="kw">return</span> <span class="fn">lca</span>(root->left, p, q);
+    <span class="kw">if</span> (p->val > root->val && q->val > root->val)
+        <span class="kw">return</span> <span class="fn">lca</span>(root->right, p, q);
+    <span class="kw">return</span> root; <span class="cm">// split point — this is the LCA</span>
+}
+
+<span class="cm">// std::set and std::map are BST-backed (O(log n))</span>
+<span class="ty">set</span>&lt;<span class="kw">int</span>&gt; bst = {<span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>}; <span class="cm">// auto-sorted, deduped</span></pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== HEAP ==================== -->
+    <section class="ds-section" id="heap">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(247,106,106,0.1)">⛰️</div>
+        <div class="ds-title">
+          <h2>Heap (Priority Queue)</h2>
+          <div class="subtitle">std::priority_queue — complete binary tree property</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(log n) insert</span>
+          <span class="tag green">O(1) peek max/min</span>
+          <span class="tag orange">O(log n) pop</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>What it is</h4>
+          <p>A complete binary tree where parent ≥ children (max-heap) or parent ≤ children (min-heap). Backed by an array. <code>priority_queue</code> is a max-heap by default in C++.</p>
+        </div>
+        <div class="card">
+          <h4>Classic use cases</h4>
+          <ul>
+            <li>Top-K elements / Kth largest</li>
+            <li>Merge K sorted lists</li>
+            <li>Dijkstra's shortest path</li>
+            <li>Meeting rooms / task scheduler</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">heap + top-K pattern</span></div>
+        <pre><span class="cm">// Max-heap (default)</span>
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>&gt; maxH;
+maxH.<span class="fn">push</span>(<span class="nm">3</span>); maxH.<span class="fn">push</span>(<span class="nm">1</span>); maxH.<span class="fn">push</span>(<span class="nm">5</span>);
+maxH.<span class="fn">top</span>();   <span class="cm">// 5 — O(1)</span>
+maxH.<span class="fn">pop</span>();   <span class="cm">// removes 5 — O(log n)</span>
+
+<span class="cm">// Min-heap</span>
+<span class="ty">priority_queue</span>&lt;<span class="kw">int</span>, <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;, <span class="ty">greater</span>&lt;<span class="kw">int</span>&gt;&gt; minH;
+
+<span class="cm">// Kth largest element</span>
+<span class="kw">int</span> <span class="fn">findKthLargest</span>(<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;& nums, <span class="kw">int</span> k) {
+    <span class="ty">priority_queue</span>&lt;<span class="kw">int</span>, <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;, <span class="ty">greater</span>&lt;<span class="kw">int</span>&gt;&gt; minH;
+    <span class="kw">for</span> (<span class="kw">int</span> n : nums) {
+        minH.<span class="fn">push</span>(n);
+        <span class="kw">if</span> (minH.<span class="fn">size</span>() > k) minH.<span class="fn">pop</span>(); <span class="cm">// keep top K</span>
+    }
+    <span class="kw">return</span> minH.<span class="fn">top</span>(); <span class="cm">// Kth largest</span>
+}
+
+<span class="cm">// Custom comparator (pair: {freq, val})</span>
+<span class="kw">auto</span> cmp = [](<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt; a, <span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt; b) {
+    <span class="kw">return</span> a.first > b.first; <span class="cm">// min-heap by frequency</span>
+};
+<span class="ty">priority_queue</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;, <span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;&gt;, <span class="kw">decltype</span>(cmp)&gt; pq(cmp);
+
+<span class="cm">// std::make_heap, push_heap, pop_heap on raw vector</span></pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>To build a heap from n elements: O(n) — mention this over n × O(log n) push</li>
+          <li>Top-K with min-heap of size K is better than max-heap — O(n log K) not O(n log n)</li>
+          <li>Heap does NOT support O(log n) delete-by-value — use lazy deletion</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== GRAPH ==================== -->
+    <section class="ds-section" id="graph">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(54,215,183,0.1)">🕸️</div>
+        <div class="ds-title">
+          <h2>Graph</h2>
+          <div class="subtitle">Adjacency list / matrix — directed or undirected</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">BFS / DFS</span>
+          <span class="tag purple">Dijkstra</span>
+          <span class="tag orange">Topological Sort</span>
+          <span class="tag red">Cycle detection</span>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h4>Adjacency List</h4>
+          <p>Space O(V+E). Best for sparse graphs. Most practical choice.</p>
+        </div>
+        <div class="card">
+          <h4>Adjacency Matrix</h4>
+          <p>Space O(V²). O(1) edge lookup. Best for dense graphs.</p>
+        </div>
+        <div class="card">
+          <h4>Edge List</h4>
+          <p>Just a list of edges. Used in Kruskal's MST. Easiest to sort by weight.</p>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">graph templates — BFS, DFS, Dijkstra, Topo Sort</span></div>
+        <pre><span class="kw">int</span> V = <span class="nm">7</span>;
+<span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;&gt; adj(V);
+adj[<span class="nm">0</span>].<span class="fn">push_back</span>(<span class="nm">1</span>); adj[<span class="nm">0</span>].<span class="fn">push_back</span>(<span class="nm">2</span>); <span class="cm">// 0→1, 0→2</span>
+
+<span class="cm">// DFS (recursive)</span>
+<span class="kw">void</span> <span class="fn">dfs</span>(<span class="kw">int</span> v, <span class="ty">vector</span>&lt;<span class="kw">bool</span>&gt;& vis, <span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;&gt;& adj) {
+    vis[v] = <span class="kw">true</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> u : adj[v]) <span class="kw">if</span> (!vis[u]) <span class="fn">dfs</span>(u, vis, adj);
+}
+
+<span class="cm">// Dijkstra — SSSP for weighted graphs (no neg weights)</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">dijkstra</span>(<span class="kw">int</span> src, <span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;&gt;&gt;& adjW) {
+    <span class="kw">int</span> n = adjW.<span class="fn">size</span>();
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; dist(n, <span class="ty">INT_MAX</span>);
+    <span class="ty">priority_queue</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;, <span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">int</span>,<span class="kw">int</span>&gt;&gt;, <span class="ty">greater</span>&lt;&gt;&gt; pq;
+    dist[src] = <span class="nm">0</span>; pq.<span class="fn">push</span>({<span class="nm">0</span>, src});
+    <span class="kw">while</span> (!pq.<span class="fn">empty</span>()) {
+        <span class="kw">auto</span> [d, u] = pq.<span class="fn">top</span>(); pq.<span class="fn">pop</span>();
+        <span class="kw">if</span> (d > dist[u]) <span class="kw">continue</span>; <span class="cm">// stale entry</span>
+        <span class="kw">for</span> (<span class="kw">auto</span> [v, w] : adjW[u]) {
+            <span class="kw">if</span> (dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                pq.<span class="fn">push</span>({dist[v], v});
+            }
+        }
+    }
+    <span class="kw">return</span> dist;
+}
+
+<span class="cm">// Topological Sort (Kahn's BFS)</span>
+<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">topoSort</span>(<span class="kw">int</span> V, <span class="ty">vector</span>&lt;<span class="ty">vector</span>&lt;<span class="kw">int</span>&gt;&gt;& adj) {
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; indegree(V, <span class="nm">0</span>), order;
+    <span class="kw">for</span> (<span class="kw">int</span> u = <span class="nm">0</span>; u < V; u++) <span class="kw">for</span> (<span class="kw">int</span> v : adj[u]) indegree[v]++;
+    <span class="ty">queue</span>&lt;<span class="kw">int</span>&gt; q;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < V; i++) <span class="kw">if</span> (!indegree[i]) q.<span class="fn">push</span>(i);
+    <span class="kw">while</span> (!q.<span class="fn">empty</span>()) {
+        <span class="kw">int</span> u = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>(); order.<span class="fn">push_back</span>(u);
+        <span class="kw">for</span> (<span class="kw">int</span> v : adj[u]) <span class="kw">if</span> (--indegree[v] <span class="op">==</span> <span class="nm">0</span>) q.<span class="fn">push</span>(v);
+    }
+    <span class="kw">return</span> order; <span class="cm">// size != V means cycle exists</span>
+}</pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Decision Tree</div>
+        <ul>
+          <li>Unweighted shortest path → BFS</li>
+          <li>Weighted, no neg edges → Dijkstra</li>
+          <li>Negative edges → Bellman-Ford</li>
+          <li>All-pairs shortest path → Floyd-Warshall</li>
+          <li>Ordering with dependencies → Topological Sort (detect cycle: size check)</li>
+          <li>Connected components → DFS/BFS or Union-Find</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== TRIE ==================== -->
+    <section class="ds-section" id="trie">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(124,106,247,0.12)">🔤</div>
+        <div class="ds-title">
+          <h2>Trie</h2>
+          <div class="subtitle">Prefix tree — O(L) insert/search where L = word length</div>
+        </div>
+        <div class="tags">
+          <span class="tag purple">O(L) search</span>
+          <span class="tag green">Prefix matching</span>
+          <span class="tag orange">Autocomplete</span>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">trie implementation</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">TrieNode</span> {
+    <span class="ty">TrieNode</span>* children[<span class="nm">26</span>] = {};
+    <span class="kw">bool</span> isEnd = <span class="kw">false</span>;
+};
+
+<span class="kw">struct</span> <span class="ty">Trie</span> {
+    <span class="ty">TrieNode</span>* root = <span class="kw">new</span> <span class="ty">TrieNode</span>();
+
+    <span class="kw">void</span> <span class="fn">insert</span>(<span class="ty">string</span> word) {
+        <span class="ty">TrieNode</span>* cur = root;
+        <span class="kw">for</span> (<span class="kw">char</span> c : word) {
+            <span class="kw">int</span> idx = c - <span class="st">'a'</span>;
+            <span class="kw">if</span> (!cur->children[idx]) cur->children[idx] = <span class="kw">new</span> <span class="ty">TrieNode</span>();
+            cur = cur->children[idx];
+        }
+        cur->isEnd = <span class="kw">true</span>;
+    }
+
+    <span class="kw">bool</span> <span class="fn">search</span>(<span class="ty">string</span> word) {
+        <span class="ty">TrieNode</span>* cur = root;
+        <span class="kw">for</span> (<span class="kw">char</span> c : word) {
+            <span class="kw">int</span> idx = c - <span class="st">'a'</span>;
+            <span class="kw">if</span> (!cur->children[idx]) <span class="kw">return false</span>;
+            cur = cur->children[idx];
+        }
+        <span class="kw">return</span> cur->isEnd;
+    }
+
+    <span class="kw">bool</span> <span class="fn">startsWith</span>(<span class="ty">string</span> prefix) {
+        <span class="ty">TrieNode</span>* cur = root;
+        <span class="kw">for</span> (<span class="kw">char</span> c : prefix) {
+            <span class="kw">int</span> idx = c - <span class="st">'a'</span>;
+            <span class="kw">if</span> (!cur->children[idx]) <span class="kw">return false</span>;
+            cur = cur->children[idx];
+        }
+        <span class="kw">return true</span>;
+    }
+};</pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Space: O(ALPHABET × N × L) — mention this tradeoff vs hash map</li>
+          <li>Used for: Word Search II, Design Search Autocomplete, Replace Words</li>
+          <li>XOR Trie: store binary representations to find max XOR in O(32) per query</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== DISJOINT SET ==================== -->
+    <section class="ds-section" id="dsu">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(54,215,183,0.1)">🧩</div>
+        <div class="ds-title">
+          <h2>Disjoint Set (Union-Find)</h2>
+          <div class="subtitle">Path compression + union by rank — nearly O(1) ops</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(α(n)) ≈ O(1)</span>
+          <span class="tag purple">Connected components</span>
+          <span class="tag orange">Cycle detection</span>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h4>What it is</h4>
+        <p>Tracks a partition of elements into disjoint sets. <strong>find(x)</strong> returns the representative (root) of x's set. <strong>union(x, y)</strong> merges two sets. With path compression + union by rank, each operation is practically O(1) — Ackermann inverse α(n).</p>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">union-find with path compression + rank</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">DSU</span> {
+    <span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; parent, rank;
+    <span class="ty">DSU</span>(<span class="kw">int</span> n) : parent(n), rank(n, <span class="nm">0</span>) {
+        <span class="fn">iota</span>(parent.<span class="fn">begin</span>(), parent.<span class="fn">end</span>(), <span class="nm">0</span>);
+    }
+    <span class="kw">int</span> <span class="fn">find</span>(<span class="kw">int</span> x) {
+        <span class="kw">if</span> (parent[x] != x) parent[x] = <span class="fn">find</span>(parent[x]); <span class="cm">// path compression</span>
+        <span class="kw">return</span> parent[x];
+    }
+    <span class="kw">bool</span> <span class="fn">unite</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) {
+        <span class="kw">int</span> px = <span class="fn">find</span>(x), py = <span class="fn">find</span>(y);
+        <span class="kw">if</span> (px <span class="op">==</span> py) <span class="kw">return false</span>; <span class="cm">// already same — cycle!</span>
+        <span class="kw">if</span> (rank[px] < rank[py]) <span class="fn">swap</span>(px, py);
+        parent[py] = px;
+        <span class="kw">if</span> (rank[px] <span class="op">==</span> rank[py]) rank[px]++;
+        <span class="kw">return true</span>;
+    }
+    <span class="kw">bool</span> <span class="fn">connected</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) { <span class="kw">return</span> <span class="fn">find</span>(x) <span class="op">==</span> <span class="fn">find</span>(y); }
+};
+
+<span class="cm">// Number of islands variant — DSU approach</span>
+<span class="cm">// Kruskal's MST: sort edges, unite if not already connected</span>
+<span class="cm">// Count components: # unique find() values after all unions</span></pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Always use both path compression AND union by rank — not just one</li>
+          <li>Cycle detection: if find(u) == find(v) before uniting — cycle exists</li>
+          <li>Kruskal's MST, number of provinces, redundant connections are classic DSU problems</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== BLOOM FILTER ==================== -->
+    <section class="ds-section" id="bloom">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(247,106,106,0.1)">🌸</div>
+        <div class="ds-title">
+          <h2>Bloom Filter</h2>
+          <div class="subtitle">Probabilistic set — space-efficient membership test</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(k) insert/query</span>
+          <span class="tag red">False positives possible</span>
+          <span class="tag orange">No false negatives</span>
+          <span class="tag purple">Space efficient</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>How it works</h4>
+          <p>A bit array of size m, and k independent hash functions. To insert: set k bits to 1. To query: check if all k bits are 1. False positive possible; false negative never. Cannot delete (standard).</p>
+        </div>
+        <div class="card">
+          <h4>Real-world use</h4>
+          <ul>
+            <li>Database query caching (avoid disk hit)</li>
+            <li>Chrome's malicious URL filter</li>
+            <li>CDN / cache membership check</li>
+            <li>Distributed systems deduplication</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">simple bloom filter implementation</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">BloomFilter</span> {
+    <span class="ty">vector</span>&lt;<span class="kw">bool</span>&gt; bits;
+    <span class="kw">int</span> m, k; <span class="cm">// size and number of hash functions</span>
+
+    <span class="ty">BloomFilter</span>(<span class="kw">int</span> m, <span class="kw">int</span> k) : bits(m, <span class="kw">false</span>), m(m), k(k) {}
+
+    <span class="cm">// Simulate k hash functions via double hashing</span>
+    <span class="kw">int</span> <span class="fn">hash_i</span>(<span class="ty">string</span>& s, <span class="kw">int</span> i) {
+        <span class="kw">size_t</span> h1 = <span class="ty">hash</span>&lt;<span class="ty">string</span>&gt;{}(s);
+        <span class="kw">size_t</span> h2 = <span class="ty">hash</span>&lt;<span class="ty">string</span>&gt;{}(s + <span class="ty">to_string</span>(i));
+        <span class="kw">return</span> (h1 + i * h2) % m;
+    }
+
+    <span class="kw">void</span> <span class="fn">insert</span>(<span class="ty">string</span> s) {
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < k; i++) bits[<span class="fn">hash_i</span>(s, i)] = <span class="kw">true</span>;
+    }
+
+    <span class="kw">bool</span> <span class="fn">mightContain</span>(<span class="ty">string</span> s) {
+        <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nm">0</span>; i < k; i++)
+            <span class="kw">if</span> (!bits[<span class="fn">hash_i</span>(s, i)]) <span class="kw">return false</span>; <span class="cm">// definitely absent</span>
+        <span class="kw">return true</span>; <span class="cm">// probably present (false positive possible)</span>
+    }
+};
+<span class="cm">// FP rate ≈ (1 - e^(-kn/m))^k   where n = # elements inserted</span></pre>
+      </div>
+      <div class="warn-box">
+        <strong>Interview note:</strong> Bloom filters are a system design / knowledge question. Know the FP rate formula, why deletion is hard (use Counting Bloom Filter variant), and real-world use cases. Not typically asked as a coding problem.
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ==================== LRU CACHE ==================== -->
+    <section class="ds-section" id="lru">
+      <div class="ds-header">
+        <div class="ds-icon" style="background:rgba(124,106,247,0.12)">⏱️</div>
+        <div class="ds-title">
+          <h2>LRU Cache</h2>
+          <div class="subtitle">HashMap + Doubly Linked List — O(1) get and put</div>
+        </div>
+        <div class="tags">
+          <span class="tag green">O(1) get/put</span>
+          <span class="tag purple">Eviction policy</span>
+          <span class="tag orange">Classic design problem</span>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h4>Design</h4>
+          <p>Hash map for O(1) key lookup. Doubly linked list to maintain recency order — move accessed nodes to front, evict from back. The classic combination problem in interviews.</p>
+        </div>
+        <div class="card">
+          <h4>Why this combo works</h4>
+          <ul>
+            <li>HashMap → O(1) find the node pointer</li>
+            <li>DLL → O(1) remove + move to front</li>
+            <li>Together → O(1) for both get and put</li>
+            <li>Evict: always remove tail (LRU node)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">C++</span><span class="code-label">LRU cache — full implementation</span></div>
+        <pre><span class="kw">struct</span> <span class="ty">LRUNode</span> {
+    <span class="kw">int</span> key, val;
+    <span class="ty">LRUNode</span> *prev, *next;
+    <span class="ty">LRUNode</span>(<span class="kw">int</span> k, <span class="kw">int</span> v) : key(k), val(v), prev(<span class="kw">nullptr</span>), next(<span class="kw">nullptr</span>) {}
+};
+
+<span class="kw">class</span> <span class="ty">LRUCache</span> {
+    <span class="kw">int</span> cap;
+    <span class="ty">unordered_map</span>&lt;<span class="kw">int</span>, <span class="ty">LRUNode</span>*&gt; cache;
+    <span class="ty">LRUNode</span> *head, *tail; <span class="cm">// dummy sentinels</span>
+
+    <span class="kw">void</span> <span class="fn">remove</span>(<span class="ty">LRUNode</span>* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+    <span class="kw">void</span> <span class="fn">insertFront</span>(<span class="ty">LRUNode</span>* node) {
+        node->next = head->next;
+        node->prev = head;
+        head->next->prev = node;
+        head->next = node;
+    }
+<span class="kw">public</span>:
+    <span class="ty">LRUCache</span>(<span class="kw">int</span> capacity) : cap(capacity) {
+        head = <span class="kw">new</span> <span class="ty">LRUNode</span>(<span class="nm">0</span>,<span class="nm">0</span>); tail = <span class="kw">new</span> <span class="ty">LRUNode</span>(<span class="nm">0</span>,<span class="nm">0</span>);
+        head->next = tail; tail->prev = head;
+    }
+    <span class="kw">int</span> <span class="fn">get</span>(<span class="kw">int</span> key) {
+        <span class="kw">if</span> (!cache.<span class="fn">count</span>(key)) <span class="kw">return</span> -<span class="nm">1</span>;
+        <span class="ty">LRUNode</span>* node = cache[key];
+        <span class="fn">remove</span>(node); <span class="fn">insertFront</span>(node); <span class="cm">// move to MRU position</span>
+        <span class="kw">return</span> node->val;
+    }
+    <span class="kw">void</span> <span class="fn">put</span>(<span class="kw">int</span> key, <span class="kw">int</span> value) {
+        <span class="kw">if</span> (cache.<span class="fn">count</span>(key)) { <span class="fn">remove</span>(cache[key]); <span class="kw">delete</span> cache[key]; }
+        <span class="ty">LRUNode</span>* node = <span class="kw">new</span> <span class="ty">LRUNode</span>(key, value);
+        cache[key] = node; <span class="fn">insertFront</span>(node);
+        <span class="kw">if</span> (cache.<span class="fn">size</span>() > cap) {
+            <span class="ty">LRUNode</span>* lru = tail->prev;
+            <span class="fn">remove</span>(lru); cache.<span class="fn">erase</span>(lru->key); <span class="kw">delete</span> lru;
+        }
+    }
+};
+
+<span class="cm">// Easier alternative: use std::list + unordered_map in C++</span>
+<span class="cm">// list maintains order; map stores list iterators for O(1) splice</span></pre>
+      </div>
+      <div class="tip-box">
+        <div class="tip-box-header">⚡ Interview Traps</div>
+        <ul>
+          <li>Dummy head/tail sentinels eliminate edge-case null checks in insert/remove</li>
+          <li>C++ shortcut: <code>std::list</code> + <code>unordered_map&lt;int, list::iterator&gt;</code> — splice() moves nodes in O(1)</li>
+          <li>Extend to LFU Cache: O(1) requires 3 maps + DLL per frequency</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+  // Active nav on scroll
+  const sections = document.querySelectorAll('.ds-section');
+  const navLinks = document.querySelectorAll('.sidebar nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 60) cur = s.id; });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  });
+</script>
+</body>
+</html>
